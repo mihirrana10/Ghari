@@ -178,15 +178,16 @@
          <div class="modal-dialog" role="document">
             <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Order Details</h5> 
                
                   <span aria-hidden="true">&times;</span>
                   </button>
                </div>
                <div class="modal-body">
-                  <label class="form-label" >Order ID</label> <br><br>
-                  <label id="hello" class="form-label"  >Customer Name</label>
-                  <span id="uid"></span>
+                  <label class="form-label" >Order ID</label> <label id="orderid"></label> <br><br>
+                  <label id="hello" class="form-label"  >Customer Name </label> <label id="custname"></label>
+                  
+                 
                </div>
                
                <div class="modal-footer">
@@ -215,95 +216,49 @@
       <script>
          $(document).ready(function(){
          
-         
+           let fmData= document.getElementById('formdata');
+           let cust = document.getElementById('custname');
+           let idd = document.getElementById('orderid');
+         // console.log(fmData);
+
            // var form = $|('#formdata');
          
            $('#butsave').on('click', function(){
+
+            let data =new FormData(fmData);
+            
+            // console.log(data.get('ghari_status'));
+            
+            (async function(){
+            response= await fetch("insert.php",{
+                method:'post',
+                body:data,
+
+            });   
+            result=await response.json();
+
+            console.log(result);
+
+            idd.innerHTML=result.uid;
+            cust.innerHTML=result.name;
+
+            fmData.reset();
+
+
+            })();
+
                   
-                   //  $("#butsave").attr("disabled", "disabled");
-                    var name = $('#name').val();
-                    var phone_no = $('#phone_no').val();
-                    var addres = $('#addres').val();
-                    var g2pc = $('#g2pc').val();
-                    var g250g = $('#g250g').val();
-                    var g500g = $('#g500g').val();
-                    var g1kg = $('#g1kg').val();
-                    var g2kg = $('#g2kg').val();
-                    var user_id = $('#id').val();
-                    var reference_name =$('#username').val();
-                  //   var ghari_status = $('#ghari_status').val();
-                    var ghari_status = $("input[name='ghari_status']:checked").val();
-                    var uid=$('#uid').val();
-         
-                  //   console.log(name);
-                  //  console.log(uid);
-               // return false;
-             
-         
-                   
-         
-                    $.ajax({
-                       url:"insert.php",
-                       
-                       type:'POST',
-                      
-                       data: {
-                               name: name,
-                               phone_no: phone_no,
-                               addres: addres,
-                               g2pc: g2pc,
-                               g250g: g250g,			
-                               g500g: g500g,	
-                               g1kg: g1kg,
-                               g2kg: g2kg,
-                               id : user_id,
-                               username: reference_name,
-                               ghari_status: ghari_status,
-                               uid:uid
-         
-                             },
-                         // dataType:JSON,
-                         
-                        
-                             
-                            //  cache: false,
-                             
-                               success: function(dataResult){
-                                  
-                                 // console.log(dataResult);
-                                 var hi= JSON.parse(dataResult);
-                                 // console.log(hi);       
-                                 // console.log(hi.showid);                        
-                                 // console.log(hi.showajax);
-         
-                                 
-                               
-                              //  if(dataResult.statusCode==200){
-
-                                 console.log(hi);
-                                 // $('#exampleModal').modal('show');
-                                 $("#butsave").removeAttr("disabled");
-                                 // $('#formdata').find('input:text').val('');
-                                 // $("#success").show();
-                                 // document.getElementById('hello').innerText(hi.showajax);
-                                 $('#uid').html(hi.showid); 						
-
-                                 const elem = document.getElementById('hello');
-                                  elem.style.color = 'red';
-
-                              //  }
-                              //  else if(dataResult.statusCode==201){
-                              //    alert("Error occured !");
-                              //  }
-                               
-                             }
-                             
-                     });
-                 
-               });
-         
+         });
+            
          });
          
+      
+       
+  
+              // Button that triggered the modal
+            //   let button = event.relatedTarget;
+              // Extract info from data-bs-* attributes
+
          
       </script>
 
